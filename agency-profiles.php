@@ -83,7 +83,7 @@ register_deactivation_hook( __FILE__, 'agency_profiles_deactivate' );
 
 function agency_profiles_deactivate(){
     
-    // Do anything?
+    // Deactivate?
     global $wpdb;
     $table_name = $wpdb->prefix . 'agency_profiles';
     $sql = "DROP TABLE IF EXISTS $table_name";
