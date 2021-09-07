@@ -40,6 +40,13 @@ define('agency_profiles_location_url',  plugins_url(__FILE__));
 register_activation_hook( __FILE__, 'agency_profiles_activate' );
 
 function agency_profiles_activate(){
+
+    // Detect if ACF is installed first.
+    $active_plugins = get_option('active_plugins');
+    if( !in_array('advanced-custom-fields/acf.php', $active_plugins) ){
+        echo "<b>Please ensure Advanced Custom Fields is installed and active!</b>";
+        exit;
+    }
     
     // Create the Table
     global $wpdb;
@@ -47,6 +54,7 @@ function agency_profiles_activate(){
     $my_products_db_version = '1.0.0';
     $charset_collate = $wpdb->get_charset_collate();
 
+    // Create Table and Put default data in it
     if ( $wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name ) {
 
         $sql = "CREATE TABLE $table_name (
@@ -73,6 +81,65 @@ function agency_profiles_activate(){
 
     }
 
+    // Register the templatessss
+    // do stuff and things omg
+
+
+    // Create the /agency-profile
+    
+    if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = 'agency-profile'", 'ARRAY_A' ) ) {
+
+        $current_user = wp_get_current_user();
+        
+        // create post object
+        $page = array(
+            'post_title'  => __( 'Agency Profile' ),
+            'post_status' => 'publish',
+            'post_author' => $current_user->ID,
+            'post_type'   => 'page',
+            // 'page_template'   => 'page',
+        );
+        
+        // insert the post into the database
+        wp_insert_post( $page );
+    }
+
+    // Create the /agency-profile-edit
+    if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = 'agency-profile-edit'", 'ARRAY_A' ) ) {
+
+        $current_user = wp_get_current_user();
+        
+        // create post object
+        $page = array(
+            'post_title'  => __( 'Agency Profile Edit' ),
+            'post_status' => 'publish',
+            'post_author' => $current_user->ID,
+            'post_type'   => 'page',
+            // 'page_template'   => 'page',
+        );
+        
+        // insert the post into the database
+        wp_insert_post( $page );
+    }
+
+    // Create the /agency-profile-view pages
+    if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = 'agency-profile-view'", 'ARRAY_A' ) ) {
+
+        $current_user = wp_get_current_user();
+        
+        // create post object
+        $page = array(
+            'post_title'  => __( 'Agency Profile View' ),
+            'post_status' => 'publish',
+            'post_author' => $current_user->ID,
+            'post_type'   => 'page',
+            // 'page_template'   => 'page',
+        );
+        
+        // insert the post into the database
+        wp_insert_post( $page );
+    }
+    
 }
 
 
@@ -83,13 +150,27 @@ register_deactivation_hook( __FILE__, 'agency_profiles_deactivate' );
 
 function agency_profiles_deactivate(){
     
-    // Deactivate?
+    // Turn off the table
     global $wpdb;
     $table_name = $wpdb->prefix . 'agency_profiles';
     $sql = "DROP TABLE IF EXISTS $table_name";
     $wpdb->query($sql);
 
+    // Delete the pages
+    // Agency Profile
+    $agency_page_ID = get_page_by_path('/agency-profile');
+    wp_delete_post($agency_page_ID->ID);
+    
+    // Agency Profile Edit
+    $agency_page_ID = get_page_by_path('/agency-profile-edit');
+    wp_delete_post($agency_page_ID->ID);
+    
+    // Agency Profile View
+    $agency_page_ID = get_page_by_path('/agency-profile-view');
+    wp_delete_post($agency_page_ID->ID);
+    
 }
+
 
 
 // ========================================================
@@ -105,6 +186,18 @@ function agency_profiles_uninstall(){
     $sql = "DROP TABLE IF EXISTS $table_name";
     $wpdb->query($sql);
     
+    // Delete the pages
+    // Agency Profile
+    $agency_page_ID = get_page_by_path('/agency-profile');
+    wp_delete_post($agency_page_ID->ID);
+    
+    // Agency Profile Edit
+    $agency_page_ID = get_page_by_path('/agency-profile-edit');
+    wp_delete_post($agency_page_ID->ID);
+    
+    // Agency Profile View
+    $agency_page_ID = get_page_by_path('/agency-profile-view');
+    wp_delete_post($agency_page_ID->ID);
 }
 
 
@@ -185,11 +278,6 @@ function admin_save_action()
         'allowed_domains'    => $_POST['allowed_domains']
     );
 
-    // echo "UPDATE $table_name 
-    // SET acf_group = '". $data['acf_group'] ."',   
-    //     allowed_domains = '". $data['allowed_domains'] ."'  
-    // WHERE ID = 1"; exit;
-
     $success = $wpdb->query( $wpdb->prepare("
         UPDATE $table_name 
         SET acf_group = '". $data['acf_group'] ."',   
@@ -197,8 +285,6 @@ function admin_save_action()
         WHERE ID = 1")
     );
 
-
-    // $success=$wpdb->insert( $table, $data, $format );
     if($success){
 
         wp_redirect( $_SERVER['HTTP_REFERER'] );
