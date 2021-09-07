@@ -81,23 +81,18 @@ function agency_profiles_activate(){
 
     }
 
-    // Register the templatessss
-    // do stuff and things omg
-
-
     // Create the /agency-profile
-    
     if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = 'agency-profile'", 'ARRAY_A' ) ) {
 
         $current_user = wp_get_current_user();
         
         // create post object
         $page = array(
-            'post_title'  => __( 'Agency Profile' ),
-            'post_status' => 'publish',
-            'post_author' => $current_user->ID,
-            'post_type'   => 'page',
-            // 'page_template'   => 'page',
+            'post_title'        => __( 'Agency Profile' ),
+            'post_status'       => 'publish',
+            'post_author'       => $current_user->ID,
+            'post_type'         => 'page',
+            'page_template'     => dirname( __FILE__ ) . '/templates/page-agency-profile.php',
         );
         
         // insert the post into the database
@@ -149,6 +144,10 @@ function agency_profiles_activate(){
 register_deactivation_hook( __FILE__, 'agency_profiles_deactivate' );
 
 function agency_profiles_deactivate(){
+
+    // YOU COULD PROBABLY AVOID TURNING OFF THE DB TABLE
+    // THAT WAY ALL ITEMS AREE SAVED
+    // ONLY CLEAR EVERYTHING ON DELETE/UNINSTALL
     
     // Turn off the table
     global $wpdb;
@@ -297,4 +296,39 @@ function admin_save_action()
     
     }
 
+}
+
+// ========================================================
+// SET THE PAGE TEMPLATES FOR THE AGENCY PAGES
+// ========================================================
+add_action("template_redirect", 'my_theme_redirect');
+
+function my_theme_redirect() {
+
+    global $wp;
+    $plugindir = dirname( __FILE__ );
+
+    if ($wp->query_vars["pagename"] == 'agency-profile') {
+        $templatefilename = 'page-agency-profile.php';
+        $return_template = $plugindir . '/templates/' . $templatefilename;
+        do_theme_redirect($return_template);
+    } else if ($wp->query_vars["pagename"] == 'agency-profile-edit') {
+        $templatefilename = 'page-agency-profile-edit.php';
+        $return_template = $plugindir . '/templates/' . $templatefilename;
+        do_theme_redirect($return_template);
+    } else if ($wp->query_vars["pagename"] == 'agency-profile-view') {
+        $templatefilename = 'page-agency-profile-view.php';
+        $return_template = $plugindir . '/templates/' . $templatefilename;
+        do_theme_redirect($return_template);
+    }
+}
+
+function do_theme_redirect($url) {
+    global $post, $wp_query;
+    if (have_posts()) {
+        include($url);
+        die();
+    } else {
+        $wp_query->is_404 = true;
+    }
 }
