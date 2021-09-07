@@ -70,7 +70,7 @@ function build_profile_sidebar($acf_tab_array) {
 
         $output .= '
             <li class="nav-item" role="presentation">
-                <a class="nav-link p-3 border-primary border mb-1 '. $activeClass .'" id="'.$value[1].'-tab" data-toggle="tab" href="#'.$value[1].'" role="tab" aria-controls="'.$value[1].'" aria-selected="true">'.$value[1].'</a>
+                <a class="nav-link p-3 border-primary border mb-1 rounded-0 '. $activeClass .'" id="'.$value[1].'-tab" data-toggle="tab" href="#'.$value[1].'" role="tab" aria-controls="'.$value[1].'" aria-selected="true">'.$value[1].'</a>
             </li>
             ';
         $i++;
@@ -121,15 +121,14 @@ get_header(); ?>
                     <?php build_profile_sidebar($sidebar); ?>
                     
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 border-primary border mb-1" id="edit-tab" href="/agency-profile-edit" >Edit Profile</a>
+                        <a class="nav-link p-3 border-primary border rounded-0 mb-1" id="edit-tab" href="/agency-profile-edit" >Edit Profile</a>
                     </li>
                 </ul>
             </div>
             <div class="col-12 col-md-9">
-                <div class="tab-content p-3 bg-light rounded border border-primary" id="myTabContent">
+                <div class="tab-content p-3 bg-light rounded-0 border border-primary" id="myTabContent">
                     <?php build_profile_tabs($sidebar); ?>
                 </div>
-
             </div>
         </div>
     </div>
@@ -469,45 +468,6 @@ article {
 }
 */
 </style>
-
-<script>
-function showTab(evt, tabId) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
-
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(tabId).style.display = "block";
-  evt.currentTarget.className += " active";
-}
-
-jQuery(document).ready(function(){
-    jQuery('a[href^="#"]').on('click',function (e) {
-        e.preventDefault();
-
-        var target = this.hash,
-        jQuerytarget = jQuery(target);
-
-        jQuery('html, body').stop().animate({
-            'scrollTop': jQuerytarget.offset().top-160
-        }, 200, 'swing', function () {
-            // window.location.hash = target;
-        });
-    });
-});
-
-</script>
 
 <?php get_footer(); ?>
 
