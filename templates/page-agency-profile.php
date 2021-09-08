@@ -182,7 +182,7 @@ get_header(); ?>
 <style>
     #profile-content{
         min-height: 100vh;
-        background: red;
+        background: yellow;
     }
 </style>
 
