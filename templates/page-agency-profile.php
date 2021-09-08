@@ -83,13 +83,15 @@ function build_profile_sidebar($acf_tab_array, $userID) {
 function build_profile_tabs($acf_tab_array, $userID) {
 
     foreach ($acf_tab_array as $tab ) {
-        $tabs[$tab['ID']] = [ $tab['key'], $tab['label']];    
+        $tabs[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type']];    
     }
+
     
     $i = 0;
     foreach ( $tabs as $key => $value ) {
         
         $activeClass = $i === 0 ? "show active" : "";
+
         ?>
         
         
@@ -97,27 +99,35 @@ function build_profile_tabs($acf_tab_array, $userID) {
             <h2 class="p-3 bg-primary text-white mb-1"><?= $value[1]; ?></h2>
             <?php
                 if ( get_field($tabs[$key][0], 'user_'.$userID) ){
-                    
-                    $tab_field = get_field($tabs[$key][0], 'user_'.$userID);
-                    
+
                     while (have_rows( $tabs[$key][0], 'user_'.$userID)){
 
                         $rows = the_row();
 
-                        // echo "<pre>";
-                        // print_r($rows);
-                        // echo "</pre>";
-                        
                         foreach($rows as $row => $value){
 
                             echo "<div class='p-3 bg-light rounded-0 border border-primary mb-1'>";
-
-                            $content = get_sub_field_object($row, 'user_'.$userID);
-
-                            echo "<h3>". $content['label']."</h3>";
-                            echo "<p>". $content['value']."</p>";
-                            echo "</div>";
                             
+                            $content = get_sub_field_object($row, 'user_'.$userID);
+                            
+                            if($content['type'] == 'group'){
+                                
+                                $subcontent = get_sub_field_object($content['key'], 'user_'.$userID);
+                                echo "<h3>". $content['label']."</h3>";
+                                
+                                foreach( $subcontent['sub_fields'] as $subfield ){
+                                    echo "<h4>". $subfield['label']."</h4>";
+                                    echo "<p>". $content['value'][$subfield['name']]."</p>";
+
+                                }
+                            
+                            } else {
+                                
+                                echo "<h3>". $content['label']."</h3>";
+                                echo "<p>". $content['value']."</p>";
+                                
+                            }
+                            echo "</div>";
                         }
 
                     }
