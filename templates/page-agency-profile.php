@@ -60,7 +60,7 @@ foreach ($fields as $field => $data) {
 function build_profile_sidebar($acf_tab_array, $userID) {
 
     foreach ($acf_tab_array as $tab ) {
-        $menu_item[$tab['ID']] = [ $tab['key'], $tab['label']];    
+        $menu_item[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type'], $tab['name']];    
     }
     
     $output = ''; //begin building the menu
@@ -71,7 +71,7 @@ function build_profile_sidebar($acf_tab_array, $userID) {
 
         $output .= '
             <li class="nav-item" role="presentation">
-                <a class="nav-link p-3 border-primary border mb-1 rounded-0 '. $activeClass .'" id="'.$value[1].'-tab" data-toggle="tab" href="#'.$value[1].'" role="tab" aria-controls="'.$value[1].'" aria-selected="true">'.$value[1].'</a>
+                <a class="nav-link p-3 border-primary border mb-1 rounded-0 '. $activeClass .'" id="'.$value[3].'-tab" data-toggle="tab" href="#'.$value[3].'" role="tab" aria-controls="'.$value[3].'" aria-selected="true">'.$value[1].'</a>
             </li>
             ';
         $i++;
@@ -83,7 +83,7 @@ function build_profile_sidebar($acf_tab_array, $userID) {
 function build_profile_tabs($acf_tab_array, $userID) {
 
     foreach ($acf_tab_array as $tab ) {
-        $tabs[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type']];    
+        $tabs[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type'], $tab['name']];    
     }
 
     
@@ -95,7 +95,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
         ?>
         
         
-        <div class="tab-pane fade <?= $activeClass; ?> " id="<?= $value[1]; ?>" role="tabpanel" aria-labelledby="<?= $value[1]; ?>-tab">
+        <div class="tab-pane fade <?= $activeClass; ?> " id="<?= $value[3]; ?>" role="tabpanel" aria-labelledby="<?= $value[3]; ?>-tab">
             <h2 class="p-3 bg-primary text-white mb-1"><?= $value[1]; ?></h2>
             <?php
                 if ( get_field($tabs[$key][0], 'user_'.$userID) ){
