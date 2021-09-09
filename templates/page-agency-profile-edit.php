@@ -37,8 +37,11 @@ $user_email = $user->user_email;
 global $wpdb;
 $data = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}agency_profiles WHERE id = 1", 'ARRAY_A' );
 
-$acf_group = $data['acf_group'];
-$allowed_domains = $data['allowed_domains'];
+$acf_group          = $data['acf_group'];
+$allowed_domains    = $data['allowed_domains'];
+$primary_color      = $data['primary_color'];
+$secondary_color    = $data['secondary_color'];
+$background_color   = $data['background_color'];
 
 function add_acf_form_head(){
     global $post;
@@ -66,7 +69,7 @@ foreach ($fields as $field => $data) {
 function build_profile_sidebar($acf_tab_array, $userID) {
 
     foreach ($acf_tab_array as $tab ) {
-        $menu_item[$tab['ID']] = [ $tab['key'], $tab['label']];    
+        $menu_item[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type'], $tab['name']];    
     }
     
     $output = ''; //begin building the menu
@@ -95,7 +98,7 @@ function build_profile_form($acf_group, $userID){
             'return' => add_query_arg( 'updated', 'true', get_permalink() ),
             'html_submit_button'  => '<input type="submit" class="btn btn-primary rounded-0" value="%s" />',
             'updated_message' => __("Your changes have been saved", 'acf'),
-            'html_updated_message'  => '<div id="message" class="bg-primary text-white p-3"><p>%s</p></div>',
+            'html_updated_message'  => '<div id="message" class="bg-success text-white p-3 mb-4"><p class="mb-0">%s</p></div>',
             'submit_value' => "Save changes"
         );
         
@@ -116,11 +119,11 @@ function build_profile_form($acf_group, $userID){
 get_header(); ?>
 
 
-<section class="py-5 bg-primary">
+<section class="py-5" id="profile-header">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-white">Edit Agency Profile</h1>
+                <h1 class="text-white">Agency Profile</h1>
             </div>
         </div>
     </div>
@@ -132,7 +135,7 @@ get_header(); ?>
             <div class="col-12 col-md-3 px-3 mb-5">
                 <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 border-primary border rounded-0 mb-1" id="edit-tab" href="/agency-profile" >View my profile</a>
+                        <a class="nav-link p-3 active text-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile" > <span class="chevron left"></span> View my profile</a>
                     </li>
                 </ul>
             </div>
@@ -148,6 +151,86 @@ get_header(); ?>
 <style>
     #profile-content{
         min-height: 100vh;
+    }
+    #profile-header{
+        background: <?= $primary_color; ?>;
+    }
+    #profile-content{
+        min-height: 100vh;
+        background: <?= $background_color; ?>;
+    }
+    a{
+        color: <?= $primary_color; ?>;
+    }
+    a:hover{
+        background: <?= $secondary_color; ?>!important;
+        /* opacity: .4; */
+        color: #fff;
+    }
+    a.active, .bg-primary{
+        background-color:<?= $primary_color; ?>!important;
+        /* color: #fff; */
+    }
+    .btn.btn-primary{
+        background-color:<?= $primary_color; ?>!important;
+        border-color:<?= $primary_color; ?>!important;
+    }
+    .btn.btn-primary:hover{
+        background-color:<?= $secondary_color; ?>!important;
+        border-color:<?= $secondary_color; ?>!important;
+    }
+    .acf-fields > .acf-field{
+        padding: 0 0;
+        margin-bottom: 30px;
+        border-top: none;
+    }
+    .acf-field-group > .acf-input .acf-fields{
+        padding: 15px;
+    }
+    .acf-fields .acf-fields .acf-fields{
+        padding: 0;
+        border: none;
+    }
+    .acf-fields .acf-fields .acf-fields .acf-field{
+        border-top: none;
+        margin-bottom: 30px;
+    }
+    .acf-fields{
+        margin-bottom: 30px;
+    }
+    .acf-field .acf-field label{
+        font-weight: 400;
+    }
+    .acf-field-group[data-type="group"] > .acf-label{
+        background-color:<?= $primary_color; ?>!important;
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 400!important;
+        padding: 15px;
+        margin-bottom: 0;
+    }
+    .acf-field .acf-field .acf-label{
+        color: #000;
+        background-color: #fff!important;
+        padding: 0;
+    }
+    .chevron::before {
+        border-style: solid;
+        border-width: 0.2em 0.2em 0 0;
+        content: '';
+        display: inline-block;
+        height: .6em;
+        left: 0.15em;
+        position: relative;
+        top: 7px;
+        transform: rotate(-45deg);
+        vertical-align: top;
+        width: .6em;
+    }
+
+    .chevron.left:before {
+        left: 0;
+        transform: rotate(225deg);
     }
 </style>
 

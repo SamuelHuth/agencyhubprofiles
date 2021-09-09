@@ -37,8 +37,11 @@ $user_email = $user->user_email;
 global $wpdb;
 $data = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}agency_profiles WHERE id = 1", 'ARRAY_A' );
 
-$acf_group = $data['acf_group'];
-$allowed_domains = $data['allowed_domains'];
+$acf_group          = $data['acf_group'];
+$allowed_domains    = $data['allowed_domains'];
+$primary_color      = $data['primary_color'];
+$secondary_color    = $data['secondary_color'];
+$background_color   = $data['background_color'];
 
 
 // ========================================================
@@ -71,7 +74,7 @@ function build_profile_sidebar($acf_tab_array, $userID) {
 
         $output .= '
             <li class="nav-item" role="presentation">
-                <a class="nav-link p-3 border-primary border mb-1 rounded-0 '. $activeClass .'" id="'.$value[3].'-tab" data-toggle="tab" href="#'.$value[3].'" role="tab" aria-controls="'.$value[3].'" aria-selected="true">'.$value[1].'</a>
+                <a class="nav-link p-3 bg-white border mb-1 d-flex justify-content-between align-items-center rounded-0 '. $activeClass .'" id="'.$value[3].'-tab" data-toggle="tab" href="#'.$value[3].'" role="tab" aria-controls="'.$value[3].'" aria-selected="true">'.$value[1].' <span class="chevron right"></span></a>
             </li>
             ';
         $i++;
@@ -95,8 +98,8 @@ function build_profile_tabs($acf_tab_array, $userID) {
         ?>
         
         
-        <div class="tab-pane fade <?= $activeClass; ?> " id="<?= $value[3]; ?>" role="tabpanel" aria-labelledby="<?= $value[3]; ?>-tab">
-            <h2 class="p-3 bg-primary text-white mb-1"><?= $value[1]; ?></h2>
+        <div class="tab-pane fade bg-white <?= $activeClass; ?> " id="<?= $value[3]; ?>" role="tabpanel" aria-labelledby="<?= $value[3]; ?>-tab">
+            <h2 class="p-3 bg-primary text-white mb-0"><?= $value[1]; ?></h2>
             <?php
                 if ( get_field($tabs[$key][0], 'user_'.$userID) ){
 
@@ -106,7 +109,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
 
                         foreach($rows as $row => $value){
 
-                            echo "<div class='p-3 bg-light rounded-0 border border-primary mb-1'>";
+                            echo "<div class='p-3 bg-white rounded-0 border mb-1'>";
                             
                             $content = get_sub_field_object($row, 'user_'.$userID);
                         
@@ -163,7 +166,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
 get_header(); ?>
 
 
-<section class="py-5 bg-primary">
+<section class="py-5" id="profile-header">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -182,10 +185,10 @@ get_header(); ?>
                     <?php build_profile_sidebar($sidebar, $userID); ?>
                     
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 border-primary border rounded-0 mb-1" id="edit-tab" href="/agency-profile-edit" >Edit my profile</a>
+                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile-edit" >Edit my profile </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 border-primary border rounded-0 mb-1" id="edit-tab" href="/agency-profile-view" >View all profiles</a>
+                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile-view" >View all profiles</a>
                     </li>
                 </ul>
             </div>
@@ -199,9 +202,44 @@ get_header(); ?>
 </section>
 
 <style>
+    #profile-header{
+        background: <?= $primary_color; ?>;
+    }
     #profile-content{
         min-height: 100vh;
+        background: <?= $background_color; ?>;
     }
+    a{
+        color: <?= $primary_color; ?>;
+    }
+    a:hover{
+        background: <?= $secondary_color; ?>!important;
+        /* opacity: .4; */
+        color: #fff;
+    }
+    a.active, .bg-primary{
+        background-color:<?= $primary_color; ?>!important;
+        /* color: #fff; */
+    }
+    .chevron::before {
+        border-style: solid;
+        border-width: 0.2em 0.2em 0 0;
+        content: '';
+        display: inline-block;
+        height: .6em;
+        left: 0.15em;
+        position: relative;
+        top: 7px;
+        transform: rotate(-45deg);
+        vertical-align: top;
+        width: .6em;
+    }
+
+    .chevron.right:before {
+        left: 0;
+        transform: rotate(45deg);
+    }
+
 </style>
 
 <?php get_footer(); ?>
