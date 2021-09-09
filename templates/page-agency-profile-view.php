@@ -60,7 +60,7 @@ foreach ($fields as $field => $data) {
 function build_profile_sidebar($acf_tab_array, $userID) {
 
     foreach ($acf_tab_array as $tab ) {
-        $menu_item[$tab['ID']] = [ $tab['key'], $tab['label']];    
+        $menu_item[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type'], $tab['name']];    
     }
     
     $output = ''; //begin building the menu
@@ -71,7 +71,7 @@ function build_profile_sidebar($acf_tab_array, $userID) {
 
         $output .= '
             <li class="nav-item" role="presentation">
-                <a class="nav-link p-3 border-primary border mb-1 rounded-0 '. $activeClass .'" id="'.$value[1].'-tab" data-toggle="tab" href="#'.$value[1].'" role="tab" aria-controls="'.$value[1].'" aria-selected="true">'.$value[1].'</a>
+                <a class="nav-link p-3 border-primary border mb-1 rounded-0 '. $activeClass .'" id="'.$value[3].'-tab" data-toggle="tab" href="#'.$value[3].'" role="tab" aria-controls="'.$value[3].'" aria-selected="true">'.$value[1].'</a>
             </li>
             ';
         $i++;
@@ -83,7 +83,7 @@ function build_profile_sidebar($acf_tab_array, $userID) {
 function build_profile_tabs($acf_tab_array, $userID) {
 
     foreach ($acf_tab_array as $tab ) {
-        $tabs[$tab['ID']] = [ $tab['key'], $tab['label']];    
+        $tabs[$tab['ID']] = [ $tab['key'], $tab['label'], $tab['type'], $tab['name']];    
     }
     
     $i = 0;
@@ -93,7 +93,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
         ?>
         
         
-        <div class="tab-pane fade <?= $activeClass; ?> " id="<?= $value[1]; ?>" role="tabpanel" aria-labelledby="<?= $value[1]; ?>-tab">
+        <div class="tab-pane fade <?= $activeClass; ?> " id="<?= $value[3]; ?>" role="tabpanel" aria-labelledby="<?= $value[3]; ?>-tab">
             <h2 class="p-3 bg-primary text-white mb-1"><?= $value[1]; ?></h2>
             <?php
                 if ( get_field($tabs[$key][0], 'user_'.$userID) ){
@@ -103,21 +103,40 @@ function build_profile_tabs($acf_tab_array, $userID) {
                     while (have_rows( $tabs[$key][0], 'user_'.$userID)){
 
                         $rows = the_row();
-
-                        // echo "<pre>";
-                        // print_r($rows);
-                        // echo "</pre>";
                         
                         foreach($rows as $row => $value){
 
                             echo "<div class='p-3 bg-light rounded-0 border border-primary mb-1'>";
-
-                            $content = get_sub_field_object($row, 'user_'.$userID);
-
-                            echo "<h3>". $content['label']."</h3>";
-                            echo "<p>". $content['value']."</p>";
-                            echo "</div>";
                             
+                            $content = get_sub_field_object($row, 'user_'.$userID);
+                        
+                            if($content['type'] == 'group'){
+                                
+                                $subcontent = get_sub_field_object($content['key'], 'user_'.$userID);
+                                echo "<h3>". $content['label']."</h3>";
+                                
+                                foreach( $subcontent['sub_fields'] as $subfield ){
+                                    echo "<h4>". $subfield['label']."</h4>";
+                                    echo "<p>". $content['value'][$subfield['name']]."</p>";
+                                    
+                                }
+                            } else if($content['type'] == 'url'){
+                                
+                                echo "<h3>". $content['label']."</h3>";
+
+                                ?>
+
+                                    <iframe class="airtable-embed" src="<?= $content['value']; ?>" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+
+                                <?php
+
+                            } else {
+                                
+                                echo "<h3>". $content['label']."</h3>";
+                                echo "<p>". $content['value']."</p>";
+                                
+                            }
+                            echo "</div>";
                         }
 
                     }

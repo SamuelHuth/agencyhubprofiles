@@ -109,7 +109,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
                             echo "<div class='p-3 bg-light rounded-0 border border-primary mb-1'>";
                             
                             $content = get_sub_field_object($row, 'user_'.$userID);
-                            
+                        
                             if($content['type'] == 'group'){
                                 
                                 $subcontent = get_sub_field_object($content['key'], 'user_'.$userID);
@@ -118,9 +118,18 @@ function build_profile_tabs($acf_tab_array, $userID) {
                                 foreach( $subcontent['sub_fields'] as $subfield ){
                                     echo "<h4>". $subfield['label']."</h4>";
                                     echo "<p>". $content['value'][$subfield['name']]."</p>";
-
+                                    
                                 }
-                            
+                            } else if($content['type'] == 'url'){
+                                
+                                echo "<h3>". $content['label']."</h3>";
+
+                                ?>
+
+                                    <iframe class="airtable-embed" src="<?= $content['value']; ?>" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+
+                                <?php
+
                             } else {
                                 
                                 echo "<h3>". $content['label']."</h3>";
