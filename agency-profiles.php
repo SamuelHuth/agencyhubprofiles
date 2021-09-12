@@ -369,34 +369,35 @@ function admin_save_action()
 // ========================================================
 // SET THE PAGE TEMPLATES FOR THE AGENCY PAGES
 // ========================================================
-add_action("template_redirect", 'my_theme_redirect');
 
-function my_theme_redirect() {
+add_filter( 'template_include', 'set_custom_template', 99 );
+
+function set_custom_template( $template ) {
+
+    $new_template = '';
+
 
     global $wp;
-    $plugindir = dirname( __FILE__ );
 
-    if ($wp->query_vars["pagename"] == 'agency-profile') {
-        $templatefilename = 'page-agency-profile.php';
-        $return_template = $plugindir . '/templates/' . $templatefilename;
-        do_theme_redirect($return_template);
-    } else if ($wp->query_vars["pagename"] == 'agency-profile-edit') {
-        $templatefilename = 'page-agency-profile-edit.php';
-        $return_template = $plugindir . '/templates/' . $templatefilename;
-        do_theme_redirect($return_template);
-    } else if ($wp->query_vars["pagename"] == 'agency-profile-view') {
-        $templatefilename = 'page-agency-profile-view.php';
-        $return_template = $plugindir . '/templates/' . $templatefilename;
-        do_theme_redirect($return_template);
+    if( $wp->query_vars["pagename"] == 'agency-profile'){
+        $plugin_template = dirname( __FILE__ ) . "/templates/page-agency-profile.php";
+        
+    } else if ($wp->query_vars["pagename"] == 'agency-profile-edit'){
+        $plugin_template = dirname( __FILE__ ) . "/templates/page-agency-profile-edit.php";
+        
+    } else if ($wp->query_vars["pagename"] == 'agency-profile-view'){
+        $plugin_template = dirname( __FILE__ ) . "/templates/page-agency-profile-view.php";
+
     }
-}
+    
 
-function do_theme_redirect($url) {
-    global $post, $wp_query;
-    if (have_posts()) {
-        include($url);
-        die();
+    if( file_exists( $plugin_template ) ) {
+    
+        return $plugin_template;
+    
     } else {
-        $wp_query->is_404 = true;
+        echo "Failed to find template, contact STAFFLINK";
     }
+
+    return $template;
 }

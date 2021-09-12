@@ -169,7 +169,7 @@ get_header(); ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-white">Agency Profile</h1>
+                <h1 class="text-white">View Profiles</h1>
             </div>
         </div>
     </div>
@@ -239,7 +239,7 @@ foreach ($all_users as $user) {
                     <?php build_profile_sidebar($sidebar, $userID); ?>
                     
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile" >View my profile</a>
+                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" href="/agency-profile" >View my profile</a>
                     </li>
                 </ul>
             </div>
@@ -260,7 +260,7 @@ foreach ($all_users as $user) {
         min-height: 100vh;
         background: <?= $background_color; ?>;
     }
-    a{
+    #profile-content a{
         color: <?= $primary_color; ?>;
     }
     .text-primary{
@@ -270,20 +270,20 @@ foreach ($all_users as $user) {
         border-color: <?= $primary_color; ?>!important;
 
     }
-    a:hover{
+    #profile-content a:hover{
         background: <?= $secondary_color; ?>!important;
         /* opacity: .4; */
         color: #fff;
     }
-    a.active, .bg-primary{
+    #profile-content a.active, .bg-primary{
         background-color:<?= $primary_color; ?>!important;
-        /* color: #fff; */
+        color: #fff;
     }
-    .btn.btn-primary{
+    #profile-content .btn.btn-primary, .user-selector .btn.btn-primary{
         background-color:<?= $primary_color; ?>!important;
         border-color:<?= $primary_color; ?>!important;
     }
-    .btn.btn-primary:hover{
+    #profile-content .btn.btn-primary:hover, .user-selector .btn.btn-primary:hover{
         background-color:<?= $secondary_color; ?>!important;
         border-color:<?= $secondary_color; ?>!important;
     }

@@ -123,7 +123,7 @@ get_header(); ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-white">Agency Profile</h1>
+                <h1 class="text-white">Edit my Profile</h1>
             </div>
         </div>
     </div>
@@ -135,7 +135,7 @@ get_header(); ?>
             <div class="col-12 col-md-3 px-3 mb-5">
                 <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 active text-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile" > <span class="chevron left"></span> View my profile</a>
+                        <a class="nav-link p-3 active text-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" href="/agency-profile" > <span class="chevron left"></span> View my profile</a>
                     </li>
                 </ul>
             </div>
@@ -159,23 +159,23 @@ get_header(); ?>
         min-height: 100vh;
         background: <?= $background_color; ?>;
     }
-    a{
+    #profile-content a{
         color: <?= $primary_color; ?>;
     }
-    a:hover{
+    #profile-content a:hover{
         background: <?= $secondary_color; ?>!important;
         /* opacity: .4; */
         color: #fff;
     }
-    a.active, .bg-primary{
+    #profile-content a.active, .bg-primary{
         background-color:<?= $primary_color; ?>!important;
         /* color: #fff; */
     }
-    .btn.btn-primary{
+     #profile-content .btn.btn-primary{
         background-color:<?= $primary_color; ?>!important;
         border-color:<?= $primary_color; ?>!important;
     }
-    .btn.btn-primary:hover{
+     #profile-content .btn.btn-primary:hover{
         background-color:<?= $secondary_color; ?>!important;
         border-color:<?= $secondary_color; ?>!important;
     }

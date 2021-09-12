@@ -170,7 +170,7 @@ get_header(); ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-white">Agency Profile</h1>
+                <h1 class="text-white">My Profile</h1>
             </div>
         </div>
     </div>
@@ -185,10 +185,10 @@ get_header(); ?>
                     <?php build_profile_sidebar($sidebar, $userID); ?>
                     
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile-edit" >Edit my profile </a>
+                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" href="/agency-profile-edit" >Edit my profile </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" id="edit-tab" href="/agency-profile-view" >View all profiles</a>
+                        <a class="nav-link p-3 bg-white border rounded-0 mb-1 d-flex justify-content-between align-items-center" href="/agency-profile-view" >View all profiles</a>
                     </li>
                 </ul>
             </div>
@@ -209,17 +209,17 @@ get_header(); ?>
         min-height: 100vh;
         background: <?= $background_color; ?>;
     }
-    a{
+    #profile-content a{
         color: <?= $primary_color; ?>;
     }
-    a:hover{
+    #profile-content a:hover{
         background: <?= $secondary_color; ?>!important;
         /* opacity: .4; */
         color: #fff;
     }
-    a.active, .bg-primary{
+    #profile-content a.active, .bg-primary{
         background-color:<?= $primary_color; ?>!important;
-        /* color: #fff; */
+        color: #fff;
     }
     .chevron::before {
         border-style: solid;
