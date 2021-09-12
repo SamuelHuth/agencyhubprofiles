@@ -99,7 +99,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
         
         
         <div class="tab-pane fade bg-white <?= $activeClass; ?> " id="<?= $value[3]; ?>" role="tabpanel" aria-labelledby="<?= $value[3]; ?>-tab">
-            <h2 class="p-3 bg-primary text-white mb-0"><?= $value[1]; ?></h2>
+            <h2 class="p-3 bg-primary text-white mb-0 font-weight-bold"><?= $value[1]; ?></h2>
             <?php
                 if ( get_field($tabs[$key][0], 'user_'.$userID) ){
 
