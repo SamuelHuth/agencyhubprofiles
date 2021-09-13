@@ -395,8 +395,6 @@ function set_custom_template( $template ) {
     
         return $plugin_template;
     
-    } else {
-        echo "Failed to find template, contact STAFFLINK";
     }
 
     return $template;
