@@ -119,8 +119,40 @@ function build_profile_tabs($acf_tab_array, $userID) {
                                 echo "<h3>". $content['label']."</h3>";
                                 
                                 foreach( $subcontent['sub_fields'] as $subfield ){
-                                    echo "<h4>". $subfield['label']."</h4>";
-                                    echo "<p class='p-2 border-bottom mb-5'>". $content['value'][$subfield['name']]."</p>";
+                                    
+                                    if( $subfield['type'] == 'repeater' && !empty($content['value'][$subfield['name']]) ){
+
+                                        echo "<h4 class='mb-3'>". $subfield['label']."</h4>";
+
+                                        $i = 0;
+
+                                        foreach ( $content['value'][$subfield['name']] as $sub_key => $sub_value ){
+                                            
+
+                                            foreach( $sub_value as $title => $text ){
+
+                                                
+                                                echo "<div class='w-25 d-inline-block'>";
+                                                if( $i == 0 ){
+                                                    echo "<h5>". $title ."</h5>";
+                                                }
+                                                echo "<p class='p-2 mb-0 border-bottom'>". $text ."</p>";
+                                                echo "</div>";
+
+                                                
+                                            }
+
+                                            $i++;
+
+                                        }
+
+                                    } else {
+
+                                        echo "<h4>". $subfield['label']."</h4>";
+                                        echo "<p class='p-2 border-bottom mb-5'>". $content['value'][$subfield['name']]."</p>";
+
+                                    }
+
                                     
                                 }
                             } else if ($content['type'] == 'repeater') {
