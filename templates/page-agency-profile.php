@@ -165,6 +165,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
 
                             } else if($content['type'] == 'image'){
 
+                                echo "<h3>". $content['label']."</h3>";
                                 echo "<img src='". $content['value']['url'] ."' alt='' class='w-100'>";
 
                             } else if($content['type'] == 'url'){
