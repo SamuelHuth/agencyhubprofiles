@@ -154,6 +154,9 @@ function build_profile_tabs($acf_tab_array, $userID) {
                                     }
                                     
                                 }
+                                
+                                echo "<br /><br />";
+
                             } else if ($content['type'] == 'repeater') {
 
                                 if( empty( $content['value'] ) ){
