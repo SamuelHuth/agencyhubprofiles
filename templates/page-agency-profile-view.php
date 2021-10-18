@@ -120,7 +120,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
                                 
                                 foreach( $subcontent['sub_fields'] as $subfield ){
                                     echo "<h4>". $subfield['label']."</h4>";
-                                    echo "<p>". $content['value'][$subfield['name']]."</p>";
+                                    echo "<p class='p-2 border-bottom mb-3'>". $content['value'][$subfield['name']]."</p>";
                                     
                                 }
                             } else if ($content['type'] == 'repeater') {
