@@ -180,7 +180,7 @@ get_header(); ?>
         border-color:<?= $secondary_color; ?>!important;
     }
     .acf-fields > .acf-field{
-        padding: 0 0;
+        padding: 10px;
         margin-bottom: 30px;
         border-top: none;
     }
@@ -196,7 +196,7 @@ get_header(); ?>
         margin-bottom: 30px;
     }
     .acf-fields{
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
     .acf-field .acf-field label{
         font-weight: 400;
@@ -213,6 +213,15 @@ get_header(); ?>
         color: #000;
         background-color: #fff!important;
         padding: 0;
+    }
+    .acf-repeater .acf-row-handle.order + td{
+        padding: 10px!important;
+    }
+    a.acf-button.button.button-primary{
+        padding: 10px 20px;
+        background: #eee;
+        margin: 0 15px;
+        display: inline-block;
     }
     .chevron::before {
         border-style: solid;

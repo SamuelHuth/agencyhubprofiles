@@ -112,7 +112,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
                             echo "<div class='p-3 bg-white rounded-0 border mb-1'>";
                             
                             $content = get_sub_field_object($row, 'user_'.$userID);
-                        
+
                             if($content['type'] == 'group'){
                                 
                                 $subcontent = get_sub_field_object($content['key'], 'user_'.$userID);
@@ -123,6 +123,46 @@ function build_profile_tabs($acf_tab_array, $userID) {
                                     echo "<p>". $content['value'][$subfield['name']]."</p>";
                                     
                                 }
+                            } else if ($content['type'] == 'repeater') {
+
+                                if( empty( $content['value'] ) ){
+                                    
+                                    echo "Please add your content to: " . $content['label'];
+
+                                } else {
+
+
+                                    echo "<h3>". $content['label']."</h3>";
+                                    foreach( $content['value'] as $key => $goal ){
+
+                                        echo "<div class='p-2 border-bottom'>";
+
+                                        foreach($goal as $goal_title => $goal_value){
+
+                                            $goal_value_output = $goal_value;
+
+                                            if( gettype($goal_value) == 'array' && $goal_title == 'upload_an_image_of_your_goal' ){
+                                                
+                                                echo "<img src='". $goal_value['url'] ."' alt='' class='w-100'>";
+
+                                            } else {
+
+                                            ?>
+
+                                            <p><span class="font-weight-bold text-capitalize"><?= str_replace("_", " ", $goal_title);?>:</span> <?= $goal_value_output; ?></p>
+
+                                            <?php
+
+                                            }
+
+                                        }
+
+                                        echo "</div>";
+
+                                    }
+
+                                }
+
                             } else if($content['type'] == 'url'){
                                 
                                 echo "<h3>". $content['label']."</h3>";
