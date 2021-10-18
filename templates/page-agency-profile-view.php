@@ -298,6 +298,12 @@ foreach ($all_users as $user) {
 </section>
 
 <style>
+    h3{
+        border-bottom: 2px solid <?= $secondary_color; ?>;
+        display: inline-block;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
     #profile-header{
         background: <?= $primary_color; ?>;
     }
