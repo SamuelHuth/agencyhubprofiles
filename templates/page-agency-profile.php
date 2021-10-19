@@ -134,7 +134,7 @@ function build_profile_tabs($acf_tab_array, $userID) {
                                                 
                                                 echo "<div class='w-25 d-inline-block'>";
                                                 if( $i == 0 ){
-                                                    echo "<h5>". $title ."</h5>";
+                                                    echo "<h5 class='text-capitalize'>". str_replace("_", " ", $title) ."</h5>";
                                                 }
                                                 echo "<p class='p-2 mb-0 border-bottom'>". $text ."</p>";
                                                 echo "</div>";
@@ -146,17 +146,16 @@ function build_profile_tabs($acf_tab_array, $userID) {
 
                                         }
 
+                                        echo "<br /><br />";
+
                                     } else {
 
                                         echo "<h4>". $subfield['label']."</h4>";
                                         echo "<p class='p-2 border-bottom mb-5'>". $content['value'][$subfield['name']]."</p>";
 
                                     }
-
                                     
                                 }
-
-                                echo "<br /><br />";
 
                             } else if ($content['type'] == 'repeater') {
 
